@@ -1,0 +1,89 @@
+﻿@model ShopCartUser.Models.ProductMstr
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="product-box">
+    <div class="img-wrapper">
+        <div class="front">
+            <a href="product-page(no-sidebar).html">
+                @{
+                    var uri = "https://localhost:44336/public/subproduct/";
+                    uri += Model.SubProductTbl.FirstOrDefault().ProductImg.FirstOrDefault().Path;
+
+                    <img src="@uri"
+                         class="img-fluid blur-up lazyload bg-img" alt="">
+                }
+
+                @*<img src="~/assets/images/pro3/27.jpg"
+                    class="img-fluid blur-up lazyload bg-img" alt="">*@
+            </a>
+        </div>
+        @{
+            if (Model.SubProductTbl.FirstOrDefault().ProductImg.Count > 1)
+            {
+                <div class="back">
+                    <a href="product-page(no-sidebar).html">
+                        @{
+                            var uriback = "https://localhost:44336/public/subproduct/";
+                            uriback += Model.SubProductTbl.FirstOrDefault().ProductImg.Skip(1).FirstOrDefault().Path;
+
+                            <img src="@uriback"
+                                 class="img-fluid blur-up lazyload bg-img" alt="">
+                        }
+                    </a>
+                </div>
+            }
+            else
+            {
+                if (Model.SubProductTbl.Count > 1)
+                {
+                <div class="back">
+                    <a href="product-page(no-sidebar).html">
+                        @{
+                            var uriback = "https://localhost:44336/public/subproduct/";
+                            uriback += Model.SubProductTbl.Skip(1).FirstOrDefault().ProductImg.FirstOrDefault().Path;
+
+                            <img src="@uriback"
+                                 class="img-fluid blur-up lazyload bg-img" alt="">
+                        }
+                    </a>
+                </div>
+                }
+            }
+        }
+
+        <div class="cart-info cart-wrap">
+            <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                <i class="ti-shopping-cart"></i>
+            </button>
+            <a href="javascript:void(0)" title="Add to Wishlist">
+                <i class="ti-heart" aria-hidden="true"></i>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View">
+                <i class="ti-search" aria-hidden="true"></i>
+            </a>
+            <a href="compare.html" title="Compare">
+                <i class="ti-reload" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+    <div class="product-detail">
+        <div class="rating">
+            <i class="fa fa-star"></i>@Model.CurrentRating <i></i>
+        </div>
+        <a href="product-page(no-sidebar).html">
+            <h6>  @Html.DisplayFor(Model => Model.Name)</h6>
+        </a>
+        <h4>$ @Html.DisplayFor(Model => Model.SubProductTbl.First().Price)</h4>
+        <ul class="color-variant">
+            @foreach (SubProductTbl subPro in Model.SubProductTbl)
+            {
+                <li class="bg-light0" style="background-color:@subPro.Color.Name"></li>
+            }
+            @*
+                <li class="bg-light0"></li>
+                <li class="bg-light1"></li>
+                <li class="bg-light2"></li>*@
+        </ul>
+    </div>
+</div>
