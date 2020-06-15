@@ -28,34 +28,61 @@ namespace ShopCartUser.Controllers
             string responsedata = apiResponce.Content.ReadAsStringAsync().Result;
             HttpCommonResponse objlist = JsonConvert.DeserializeObject<HttpCommonResponse>(responsedata);
 
-            List<ProductMstr> productList = JsonConvert.DeserializeObject<List<ProductMstr>>(JsonConvert.SerializeObject(objlist.data));
-
-            foreach (ProductMstr p in productList)
+            List<ProductMstr> topCollection = new List<ProductMstr>();
+            if (objlist.success == true)
             {
-                //apiResponce = ShopCartAPI.GetAsync("subProduct/GetAll/" + p.Id).Result;
-                //responsedata = apiResponce.Content.ReadAsStringAsync().Result;
-                //objlist = JsonConvert.DeserializeObject<HttpCommonResponse>(responsedata);
-
-                List<SubProductTbl> subproductList = new List<SubProductTbl>();
-                if (objlist.data != null)
+                foreach (ProductMstr topcPro in JsonConvert.DeserializeObject<List<ProductMstr>>(JsonConvert.SerializeObject(objlist.data)))
                 {
-                    //subproductList = JsonConvert.DeserializeObject<List<SubProductTbl>>(JsonConvert.SerializeObject(objlist.data));
-                    //subproductList = JsonConvert.DeserializeObject<List<SubProductTbl>>(JsonConvert.SerializeObject(p.SubProductTbl));
-                    subproductList = p.SubProductTbl.ToList();
+                    topCollection.Add(topcPro);
                 }
-                else
-                {
-                    SubProductTbl sp = new SubProductTbl();
-                    sp.Price = 909090;
-                    subproductList.Add(sp);
-                }
-                p.SubProductTbl = subproductList;
             }
 
+            apiResponce = ShopCartAPI.GetAsync("User/Home/TodayDeal").Result;
+            responsedata = apiResponce.Content.ReadAsStringAsync().Result;
+            objlist = JsonConvert.DeserializeObject<HttpCommonResponse>(responsedata);
+
+            List<ProductMstr> todayOffer = new List<ProductMstr>();
+            if (objlist.success == true)
+            {
+                foreach (ProductMstr tdOffPro in JsonConvert.DeserializeObject<List<ProductMstr>>(JsonConvert.SerializeObject(objlist.data)))
+                {
+                    todayOffer.Add(tdOffPro);
+                }
+            }
+
+            apiResponce = ShopCartAPI.GetAsync("User/Home/NewProduct").Result;
+            responsedata = apiResponce.Content.ReadAsStringAsync().Result;
+            objlist = JsonConvert.DeserializeObject<HttpCommonResponse>(responsedata);
+
+            List<ProductMstr> NewProduct = new List<ProductMstr>();
+            if (objlist.success == true)
+            {
+                foreach (ProductMstr tdOffPro in JsonConvert.DeserializeObject<List<ProductMstr>>(JsonConvert.SerializeObject(objlist.data)))
+                {
+                    NewProduct.Add(tdOffPro);
+                }
+            }
+
+            apiResponce = ShopCartAPI.GetAsync("User/Home/BestSellProduct").Result;
+            responsedata = apiResponce.Content.ReadAsStringAsync().Result;
+            objlist = JsonConvert.DeserializeObject<HttpCommonResponse>(responsedata);
+
+            List<ProductMstr> BestSeller = new List<ProductMstr>();
+            if (objlist.success == true)
+            {
+                foreach (ProductMstr tdOffPro in JsonConvert.DeserializeObject<List<ProductMstr>>(JsonConvert.SerializeObject(objlist.data)))
+                {
+                    BestSeller.Add(tdOffPro);
+                }
+            }
+
+            UserMstr user = HttpContext.Session.GetObject<UserMstr>("User");
 
             HomeVM homeVM = new HomeVM();
-            homeVM.topCollection = productList;
-
+            homeVM.TopCollection = topCollection;
+            homeVM.TodayOffer = todayOffer;
+            homeVM.NewProduct = NewProduct;
+            homeVM.BestSeller = BestSeller;
             return View(homeVM);
         }
 
@@ -83,6 +110,14 @@ namespace ShopCartUser.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult logout()
+        {
+            Response.Cookies.Delete("UserId");
+            Response.Cookies.Delete("Token");
+            HttpContext.Session.Clear();
+            return this.RedirectToAction("Index", "Home");
+        }
     }
     public class InputData
     {
@@ -102,16 +137,4 @@ namespace ShopCartUser.Controllers
         public int? start { get; set; }
         public int? count { get; set; }
     }
-    public class HttpCommonResponse
-    {
-        public string AuthToken { get; set; }
-        public bool? success { get; set; }
-        public bool isedit { get; set; }
-        public string message { get; set; }
-        public DateTime timestamp { get; set; }
-        public dynamic data { get; set; }
-        //TODO: update to Naming to metaData
-        public MetaData metadata { get; set; }
-    }
-
 }

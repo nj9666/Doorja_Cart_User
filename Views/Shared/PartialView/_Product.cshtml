@@ -4,8 +4,11 @@
 *@
 <div class="product-box">
     <div class="img-wrapper">
+        <div class="lable-block">
+            <span class="lable3">new</span> <span class="lable4">on sale</span>
+        </div>
         <div class="front">
-            <a href="product-page(no-sidebar).html">
+            <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
                 @{
                     var uri = "https://localhost:44336/public/subproduct/";
                     uri += Model.SubProductTbl.FirstOrDefault().ProductImg.FirstOrDefault().Path;
@@ -15,14 +18,14 @@
                 }
 
                 @*<img src="~/assets/images/pro3/27.jpg"
-                    class="img-fluid blur-up lazyload bg-img" alt="">*@
+                class="img-fluid blur-up lazyload bg-img" alt="">*@
             </a>
         </div>
         @{
             if (Model.SubProductTbl.FirstOrDefault().ProductImg.Count > 1)
             {
                 <div class="back">
-                    <a href="product-page(no-sidebar).html">
+                    <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
                         @{
                             var uriback = "https://localhost:44336/public/subproduct/";
                             uriback += Model.SubProductTbl.FirstOrDefault().ProductImg.Skip(1).FirstOrDefault().Path;
@@ -37,17 +40,17 @@
             {
                 if (Model.SubProductTbl.Count > 1)
                 {
-                <div class="back">
-                    <a href="product-page(no-sidebar).html">
-                        @{
-                            var uriback = "https://localhost:44336/public/subproduct/";
-                            uriback += Model.SubProductTbl.Skip(1).FirstOrDefault().ProductImg.FirstOrDefault().Path;
+                    <div class="back">
+                        <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
+                            @{
+                                var uriback = "https://localhost:44336/public/subproduct/";
+                                uriback += Model.SubProductTbl.Skip(1).FirstOrDefault().ProductImg.FirstOrDefault().Path;
 
-                            <img src="@uriback"
-                                 class="img-fluid blur-up lazyload bg-img" alt="">
-                        }
-                    </a>
-                </div>
+                                <img src="@uriback"
+                                     class="img-fluid blur-up lazyload bg-img" alt="">
+                            }
+                        </a>
+                    </div>
                 }
             }
         }
@@ -71,7 +74,7 @@
         <div class="rating">
             <i class="fa fa-star"></i>@Model.CurrentRating <i></i>
         </div>
-        <a href="product-page(no-sidebar).html">
+        <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
             <h6>  @Html.DisplayFor(Model => Model.Name)</h6>
         </a>
         <h4>$ @Html.DisplayFor(Model => Model.SubProductTbl.First().Price)</h4>
