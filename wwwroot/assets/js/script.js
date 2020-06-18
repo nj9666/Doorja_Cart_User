@@ -219,23 +219,35 @@
         $(this).next().addClass("open");
         $(".qty-input").val('1');
     });
-    $('.quantity-right-plus').on('click',function(){
+    $('.cart-section .quantity-right-plus').on('click',function(){
         var $qty = $(this).siblings(".qty-input");
+        var $tlt = $(this).parents("tr").find(".priceTd").find("span").text();
+        var $gtlt = $(".gtotal").find("span").text();
         var currentVal = parseInt($qty.val());
         if (!isNaN(currentVal)) {
             $qty.val(currentVal + 1);
+            $(this).parents("tr").find("td:last").find("span").text(parseFloat((currentVal + 1) * $tlt).toFixed(2));
+            var newGT = parseFloat(parseFloat($gtlt) + parseFloat($tlt)).toFixed(2);
+            $(".gtotal").find("span").text(newGT);
+            $("#Gtlt").val(newGT);
         }
     });
-    $('.quantity-left-minus').on('click',function(){
+    $('.cart-section .quantity-left-minus').on('click',function(){
         var $qty = $(this).siblings(".qty-input");
         var _val =  $($qty).val();
         if(_val == '1') {
             var _removeCls = $(this).parents('.cart_qty');
             $(_removeCls).removeClass("open");
         }
+        var $tlt = $(this).parents("tr").find(".priceTd").find("span").text();
+        var $gtlt = $(".gtotal").find("span").text();
         var currentVal = parseInt($qty.val());
         if (!isNaN(currentVal) && currentVal > 0) {
             $qty.val(currentVal - 1);
+            $(this).parents("tr").find("td:last").find("span").text(parseFloat((currentVal - 1) * $tlt).toFixed(2));
+            var newGT = parseFloat(parseFloat($gtlt) - parseFloat($tlt)).toFixed(2);
+            $(".gtotal").find("span").text(newGT);
+            $("#Gtlt").val(newGT);
         }
     });
 

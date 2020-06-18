@@ -1,4 +1,5 @@
-﻿
+﻿@model ShopCartUser.Models.ViewModels.CartView;
+@using ShopCartUser.Controllers;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -36,6 +37,8 @@
                         <tr class="table-head">
                             <th scope="col">image</th>
                             <th scope="col">product name</th>
+                            <th scope="col">Color</th>
+                            <th scope="col">Size</th>
                             <th scope="col">price</th>
                             <th scope="col">quantity</th>
                             <th scope="col">action</th>
@@ -43,141 +46,82 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <a href="#"><img src="../assets/images/pro3/1.jpg" alt=""></a>
-                            </td>
-                            <td>
-                                <a href="#">cotton shirt</a>
-                                <div class="mobile-cart-content row">
-                                    <div class="col-xs-3">
-                                        <div class="qty-box">
-                                            <div class="input-group">
-                                                <input type="text" name="quantity" class="form-control input-number"
-                                                       value="1">
+                        @{ decimal Gtlt = 0;}
+                        @foreach (CartTbl c in Model.CartList)
+                        {
+
+                            <tr>
+                                <td>
+                                    <a href="../Product?prosuctid=@c.SubProducat.ProductId"><img src="@BaseController.uri@c.SubProducat.ProductImg.First().Path" alt=""></a>
+                                </td>
+                                <td>
+                                    <a href="../Product?prosuctid=@c.SubProducat.ProductId">@c.SubProducat.Product.Name</a>
+                                    <div class="mobile-cart-content row">
+                                        <div class="col-xs-3">
+                                            <div class="qty-box">
+                                                <div class="input-group">
+                                                    <input type="text" name="quantity" class="form-control input-number"
+                                                           value="1">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h2 class="td-color">$63.00</h2>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h2 class="td-color">
-                                            <a href="#" class="icon"><i class="ti-close"></i></a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h2>$63.00</h2>
-                            </td>
-                            <td>
-                                <div class="qty-box">
-                                    <div class="input-group">
-                                        <input type="number" name="quantity" class="form-control input-number"
-                                               value="1">
-                                    </div>
-                                </div>
-                            </td>
-                            <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
-                            <td>
-                                <h2 class="td-color">$4539.00</h2>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="#"><img src="../assets/images/pro3/1.jpg" alt=""></a>
-                            </td>
-                            <td>
-                                <a href="#">cotton shirt</a>
-                                <div class="mobile-cart-content row">
-                                    <div class="col-xs-3">
-                                        <div class="qty-box">
-                                            <div class="input-group">
-                                                <input type="number" name="quantity"
-                                                       class="form-control input-number" value="1">
-                                            </div>
+                                        <div class="col-xs-3">
+                                            <h2 class="td-color">$63.00</h2>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <h2 class="td-color">
+                                                <a href="#" class="icon"><i class="ti-close"></i></a>
+                                            </h2>
                                         </div>
                                     </div>
-                                    <div class="col-xs-3">
-                                        <h2 class="td-color">$63.00</h2>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h2 class="td-color">
-                                            <a href="#" class="icon"><i class="ti-close"></i></a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h2>$63.00</h2>
-                            </td>
-                            <td>
-                                <div class="qty-box">
-                                    <div class="input-group">
-                                        <input type="number" name="quantity" class="form-control input-number"
-                                               value="1">
-                                    </div>
-                                </div>
-                            </td>
-                            <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
-                            <td>
-                                <h2 class="td-color">$4539.00</h2>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="#"><img src="../assets/images/pro3/1.jpg" alt=""></a>
-                            </td>
-                            <td>
-                                <a href="#">cotton shirt</a>
-                                <div class="mobile-cart-content row">
-                                    <div class="col-xs-3">
-                                        <div class="qty-box">
-                                            <div class="input-group">
-                                                <input type="number" name="quantity"
-                                                       class="form-control input-number" value="1">
-                                            </div>
+                                </td>
+                                <td>
+                                    <h2>@c.SubProducat.Color.Name</h2>
+                                </td>
+                                <td>
+                                    <h2>@c.SubProducat.Size.Name</h2>
+                                </td>
+                                <td class="priceTd">
+                                    <h2>$<span>@c.SubProducat.Price</span></h2>
+                                </td>
+                                <td>
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <button type="button" class="btn quantity-left-minus"
+                                                    data-type="minus" data-field="" onclick="addajex(@c.Id,@c.Qty,false)">
+                                                <i class="ti-angle-left"></i>
+                                            </button>
+                                            <input name="quantity" disabled class="form-control input-number qty-input" value="@c.Qty">
+                                            <button type="button" class="btn quantity-right-plus"
+                                                    data-type="plus" data-field="" onclick="addajex(@c.Id,@c.Qty,true)">
+                                                <i class="ti-angle-right"></i>
+                                            </button>
+
                                         </div>
                                     </div>
-                                    <div class="col-xs-3">
-                                        <h2 class="td-color">$63.00</h2>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h2 class="td-color">
-                                            <a href="#" class="icon"><i class="ti-close"></i></a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h2>$63.00</h2>
-                            </td>
-                            <td>
-                                <div class="qty-box">
-                                    <div class="input-group">
-                                        <input type="number" name="quantity" class="form-control input-number"
-                                               value="1">
-                                    </div>
-                                </div>
-                            </td>
-                            <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
-                            <td>
-                                <h2 class="td-color">$4539.00</h2>
-                            </td>
-                        </tr>
+                                </td>
+                                <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
+                                <td>
+                                    @{
+                                        var total = (c.SubProducat.Price * c.Qty);
+                                        Gtlt = decimal.Add(Gtlt, total);
+                                        <h2 class="td-color">$<span>@total</span></h2>
+                                    }
+
+                                </td>
+                            </tr>
+
+                        }
                     </tbody>
+
                 </table>
-                <table class="table cart-table table-responsive-md">
+                <table class="table cart-table table-responsive-md ">
                     <tfoot>
                         <tr>
                             <td>total price :</td>
-                            <td>
-                                <h2>$6935.00</h2>
+                            <td class="gtotal">
+                                <input hidden id="Gtlt" value="@Gtlt" />
+                                <h2>$<span>@Gtlt</span></h2>
                             </td>
                         </tr>
                     </tfoot>
@@ -191,3 +135,48 @@
     </div>
 </section>
 <!--section end-->
+
+@section Scripts {
+    <script type="text/javascript">
+        function addajex(id,qty,flag) {
+
+            if (flag) {
+                qty += 1;
+            } else {
+                qty -= 1;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("chanesQty")",
+                data: { id: id, qty: qty},
+                dataType: "text",
+                success: function (msg) {
+                    toastr.info(msg);
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+        function RemoveCart(id) {
+
+           
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("RemoveCart")",
+                data: { id: id},
+                dataType: "text",
+                success: function (msg) {
+                    toastr.info(msg);
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+    </script>
+}

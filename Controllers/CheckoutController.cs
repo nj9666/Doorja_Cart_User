@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ShopCartUser.Controllers
 {
-    public class CheckoutController : Controller
+    public class CheckoutController : BaseController
     {
         public IActionResult Index()
         {

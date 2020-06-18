@@ -15,7 +15,7 @@ namespace ShopCartUser.Controllers
 {
     public class BaseController : Controller
     {
-
+        public static string uri = "https://localhost:44336/public/subproduct/";
         private HttpClient ShopCartAPI = new HttpClient();
         public BaseController()
         {
@@ -78,8 +78,33 @@ namespace ShopCartUser.Controllers
             }
             return objlist;
         }
+        public HttpCommonResponse ExecuteGetApi_Auth(string apiurl, dynamic sendData)
+        {
 
-        
+            String newData = JsonConvert.SerializeObject(sendData);
+            var sendobj = new StringContent(newData, System.Text.Encoding.UTF8, "application/json");
+            string AuthToken = Request.Cookies["Token"];
+
+            HttpRequestMessage apireq = new HttpRequestMessage(HttpMethod.Get, apiurl);
+            apireq.Headers.TryAddWithoutValidation("Authorization", AuthToken);
+            apireq.Content = sendobj;
+            HttpResponseMessage apiResponce = ShopCartAPI.SendAsync(apireq).Result;
+            HttpStatusCode responsecode = apiResponce.StatusCode;
+            HttpStatusCode Unauth = HttpStatusCode.Unauthorized;
+
+
+            string responsedata = apiResponce.Content.ReadAsStringAsync().Result;
+            HttpCommonResponse objlist = new HttpCommonResponse();
+            objlist = JsonConvert.DeserializeObject<HttpCommonResponse>(responsedata);
+            if (responsecode == Unauth)
+            {
+                objlist = new HttpCommonResponse();
+                objlist.statusCode = Unauth;
+            }
+            return objlist;
+        }
+
+
     }
     public class HttpCommonResponse
     {

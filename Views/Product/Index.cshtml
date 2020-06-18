@@ -1,5 +1,5 @@
 ﻿@model ShopCartUser.Models.ViewModels.SingleProduct;
-
+@using ShopCartUser.Controllers;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -203,12 +203,11 @@
                                 <div class="product-slick">
                                     @foreach (SubProductTbl subPro in Model.Product.SubProductTbl)
                                     {
-                                        var uri = "https://localhost:44336/public/subproduct/";
                                         foreach (ProductImg item in subPro.ProductImg)
                                         {
 
                                             <div>
-                                                <img src="@uri@item.Path" alt=""
+                                                <img src="@BaseController.uri@item.Path" alt=""
                                                      class="img-fluid blur-up lazyload image_zoom_cls-0">
                                             </div>
                                         }
@@ -220,12 +219,11 @@
                                         <div class="slider-nav">
                                             @foreach (SubProductTbl subPro in Model.Product.SubProductTbl)
                                             {
-                                                var uri = "https://localhost:44336/public/subproduct/";
                                                 foreach (ProductImg item in subPro.ProductImg)
                                                 {
 
                                                     <div>
-                                                        <img src="@uri@item.Path" alt=""
+                                                        <img src="@BaseController.uri@item.Path" alt=""
                                                              class="img-fluid blur-up lazyload">
                                                     </div>
                                                 }

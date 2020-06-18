@@ -18588,3 +18588,6 @@ body.dark {
     .product-right .size-box.nj_color ul li.active::after{
         opacity:1;
     }
+.cart-section tbody tr td, .wishlist-section tbody tr td{
+    min-width:unset;
+}
