@@ -36,7 +36,7 @@ namespace ShopCartUser.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login", new { msg = "Plz Login First" }); ;
+                return RedirectToAction("Index", "Login", new { msg = "Plz Login First" }); 
             }
         }
         [HttpPost]
@@ -78,7 +78,7 @@ namespace ShopCartUser.Controllers
             if (Convert.ToInt32(Request.Cookies["UserId"]) > 0)
             {
 
-                HttpCommonResponse ResData = ExecutePostApi_Auth("Cart/Qty/" + id, null);
+                HttpCommonResponse ResData = ExecutePostApi_Auth("Cart/Remove/" + id, null);
                 if (ResData.statusCode == HttpStatusCode.Unauthorized)
                 {
                     var msg = "Plz Re-Login, Your Last Login is one day ago";
@@ -86,13 +86,13 @@ namespace ShopCartUser.Controllers
                 }
                 if (ResData.success == true)
                 {
-                    var msg = "Qty Change sucessfully";
+                    var msg = "Item remove sucessfully";
                     return msg;
                 }
                 else
                 {
 
-                    var msg = "Qty Change NOt done plz Refresh this page and try again";
+                    var msg = "Item Not remove, plz Refresh this page and try again";
                     return msg;
                 }
 

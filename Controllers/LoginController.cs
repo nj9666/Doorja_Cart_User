@@ -45,12 +45,14 @@ namespace ShopCartUser.Controllers
                     UserMstr user = JsonConvert.DeserializeObject<UserMstr>(JsonConvert.SerializeObject(ResData.data));
                     if (user != null)
                     {
+                        user.Password = "";
                         HttpContext.Session.SetObject("User", user);
                         HttpContext.Session.SetInt32("UserId", user.Id);
                         CookieOptions userCookie = new CookieOptions();
                         userCookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Append("Token", ResData.AuthToken, userCookie);
                         Response.Cookies.Append("UserId", user.Id.ToString(), userCookie);
+                        Response.Cookies.Append("User", JsonConvert.SerializeObject(user), userCookie);
                     }
                     return this.RedirectToAction("Index", "Home");
                 }

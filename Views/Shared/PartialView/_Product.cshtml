@@ -4,7 +4,7 @@
 *@
 <div class="product-box">
     <div class="img-wrapper">
-        <div class="lable-block">
+        <div class="lable-block d-none">
             <span class="lable3">new</span> <span class="lable4">on sale</span>
         </div>
         <div class="front">
@@ -18,7 +18,7 @@
                 }
 
                 @*<img src="~/assets/images/pro3/27.jpg"
-                class="img-fluid blur-up lazyload bg-img" alt="">*@
+                    class="img-fluid blur-up lazyload bg-img" alt="">*@
             </a>
         </div>
         @{
@@ -40,17 +40,22 @@
             {
                 if (Model.SubProductTbl.Count > 1)
                 {
-                    <div class="back">
-                        <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
-                            @{
-                                var uriback = "https://localhost:44336/public/subproduct/";
-                                uriback += Model.SubProductTbl.Skip(1).FirstOrDefault().ProductImg.FirstOrDefault().Path;
+                    if (Model.SubProductTbl.Skip(1).FirstOrDefault().ProductImg.Count > 0)
+                    {
 
-                                <img src="@uriback"
-                                     class="img-fluid blur-up lazyload bg-img" alt="">
-                            }
-                        </a>
-                    </div>
+                        <div class="back">
+                            <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
+                                @{
+                                    var uriback = "https://localhost:44336/public/subproduct/";
+                                    uriback += Model.SubProductTbl.Skip(1).FirstOrDefault().ProductImg.FirstOrDefault().Path;
+
+                                    <img src="@uriback"
+                                         class="img-fluid blur-up lazyload bg-img" alt="">
+                                }
+                            </a>
+                        </div>
+
+                    }
                 }
             }
         }
@@ -77,16 +82,19 @@
         <a href="@Url.Action("Index","Product",new { prosuctid = Model.Id })">
             <h6>  @Html.DisplayFor(Model => Model.Name)</h6>
         </a>
-        <h4>$ @Html.DisplayFor(Model => Model.SubProductTbl.First().Price)</h4>
-        <ul class="color-variant">
-            @foreach (SubProductTbl subPro in Model.SubProductTbl)
-            {
-                <li class="bg-light0" style="background-color:@subPro.Color.Name"></li>
-            }
-            @*
-                <li class="bg-light0"></li>
-                <li class="bg-light1"></li>
-                <li class="bg-light2"></li>*@
-        </ul>
-    </div>
+        <p>
+            @Model.Description
+    </p>
+    <h4>$ @Html.DisplayFor(Model => Model.SubProductTbl.First().Price)</h4>
+    <ul class="color-variant">
+        @foreach (SubProductTbl subPro in Model.SubProductTbl)
+        {
+            <li class="bg-light0" style="background-color:@subPro.Color.Name"></li>
+        }
+        @*
+            <li class="bg-light0"></li>
+            <li class="bg-light1"></li>
+            <li class="bg-light2"></li>*@
+    </ul>
+</div>
 </div>

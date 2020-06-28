@@ -31,106 +31,127 @@
 <section class="cart-section section-b-space">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <table class="table cart-table table-responsive-xs">
-                    <thead>
-                        <tr class="table-head">
-                            <th scope="col">image</th>
-                            <th scope="col">product name</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Size</th>
-                            <th scope="col">price</th>
-                            <th scope="col">quantity</th>
-                            <th scope="col">action</th>
-                            <th scope="col">total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{ decimal Gtlt = 0;}
-                        @foreach (CartTbl c in Model.CartList)
-                        {
+            @if (Model.CartList == null)
+            {
 
-                            <tr>
-                                <td>
-                                    <a href="../Product?prosuctid=@c.SubProducat.ProductId"><img src="@BaseController.uri@c.SubProducat.ProductImg.First().Path" alt=""></a>
-                                </td>
-                                <td>
-                                    <a href="../Product?prosuctid=@c.SubProducat.ProductId">@c.SubProducat.Product.Name</a>
-                                    <div class="mobile-cart-content row">
-                                        <div class="col-xs-3">
-                                            <div class="qty-box">
-                                                <div class="input-group">
-                                                    <input type="text" name="quantity" class="form-control input-number"
-                                                           value="1">
+                <div class="col-sm-12">
+                    <h2 class="text-center">Your Cart List is Empty !!</h2>
+                </div>
+            }
+            else
+            {
+
+                <div class="col-sm-12">
+                    <table class="table cart-table table-responsive-xs">
+                        <thead>
+                            <tr class="table-head">
+                                <th scope="col">image</th>
+                                <th scope="col">product name</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">price</th>
+                                <th scope="col">quantity</th>
+                                <th scope="col">action</th>
+                                <th scope="col">total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ decimal Gtlt = 0;}
+                            @foreach (CartTbl c in Model.CartList)
+                            {
+
+                                <tr>
+                                    <td>
+                                        <a href="../Product?prosuctid=@c.SubProducat.ProductId"><img src="@BaseController.uri@c.SubProducat.ProductImg.First().Path" alt=""></a>
+                                    </td>
+                                    <td>
+                                        <a href="../Product?prosuctid=@c.SubProducat.ProductId">@c.SubProducat.Product.Name</a>
+                                        <div class="mobile-cart-content row">
+                                            <div class="col-xs-3">
+                                                <div class="qty-box">
+                                                    <div class="input-group">
+                                                        <input type="text" name="quantity" class="form-control input-number"
+                                                               value="1">
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="col-xs-3">
+                                                <h2 class="td-color">$63.00</h2>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <h2 class="td-color">
+                                                    <a href="#" class="icon"><i class="ti-close"></i></a>
+                                                </h2>
+                                            </div>
                                         </div>
-                                        <div class="col-xs-3">
-                                            <h2 class="td-color">$63.00</h2>
+                                    </td>
+                                    <td>
+                                        <div class="color-selector">
+                                            <ul>
+                                                <li style="background-color:@c.SubProducat.Color.Name"></li>
+                                            </ul>
                                         </div>
-                                        <div class="col-xs-3">
-                                            <h2 class="td-color">
-                                                <a href="#" class="icon"><i class="ti-close"></i></a>
-                                            </h2>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <h2>@c.SubProducat.Color.Name</h2>
-                                </td>
-                                <td>
-                                    <h2>@c.SubProducat.Size.Name</h2>
-                                </td>
-                                <td class="priceTd">
-                                    <h2>$<span>@c.SubProducat.Price</span></h2>
-                                </td>
-                                <td>
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <button type="button" class="btn quantity-left-minus"
-                                                    data-type="minus" data-field="" onclick="addajex(@c.Id,@c.Qty,false)">
-                                                <i class="ti-angle-left"></i>
-                                            </button>
-                                            <input name="quantity" disabled class="form-control input-number qty-input" value="@c.Qty">
-                                            <button type="button" class="btn quantity-right-plus"
-                                                    data-type="plus" data-field="" onclick="addajex(@c.Id,@c.Qty,true)">
-                                                <i class="ti-angle-right"></i>
-                                            </button>
+                                    </td>
+                                    <td>
+                                        <h2>@c.SubProducat.Size.Name</h2>
+                                    </td>
+                                    <td class="priceTd">
+                                        <h2>$<span>@c.SubProducat.Price</span></h2>
+                                    </td>
+                                    <td>
+                                        <div class="qty-box">
+                                            <div class="input-group">
+                                                <button type="button" class="btn quantity-left-minus"
+                                                        data-type="minus" data-field="" onclick="addajex(@c.Id,@c.Qty,false)">
+                                                    <i class="ti-angle-left"></i>
+                                                </button>
+                                                <input name="quantity" disabled class="form-control input-number qty-input" value="@c.Qty">
+                                                <button type="button" class="btn quantity-right-plus"
+                                                        data-type="plus" data-field="" onclick="addajex(@c.Id,@c.Qty,true)">
+                                                    <i class="ti-angle-right"></i>
+                                                </button>
 
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
-                                <td>
-                                    @{
-                                        var total = (c.SubProducat.Price * c.Qty);
-                                        Gtlt = decimal.Add(Gtlt, total);
-                                        <h2 class="td-color">$<span>@total</span></h2>
-                                    }
+                                    </td>
+                                    <td><button type="button" onclick="RemoveCart(@c.Id,this)" class="icon btn btn-light"><i class="ti-close"></i></button></td>
+                                    <td>
+                                        @{
+                                            var total = (c.SubProducat.Price * c.Qty);
+                                            Gtlt = decimal.Add(Gtlt, total);
+                                            <h2 class="td-color">$<span>@total</span></h2>
+                                        }
 
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+
+                    </table>
+                    <table class="table cart-table table-responsive-md ">
+                        <tfoot>
+                            <tr>
+                                <td>total price :</td>
+                                <td class="gtotal">
+                                    <input hidden id="Gtlt" value="@Gtlt" />
+                                    <h2>$<span>@Gtlt</span></h2>
                                 </td>
                             </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
-                        }
-                    </tbody>
-
-                </table>
-                <table class="table cart-table table-responsive-md ">
-                    <tfoot>
-                        <tr>
-                            <td>total price :</td>
-                            <td class="gtotal">
-                                <input hidden id="Gtlt" value="@Gtlt" />
-                                <h2>$<span>@Gtlt</span></h2>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            }
         </div>
         <div class="row cart-buttons">
-            <div class="col-6"><a href="#" class="btn btn-solid">continue shopping</a></div>
-            <div class="col-6"><a href="#" class="btn btn-solid">check out</a></div>
+            <div class="col-6"><a href="/" class="btn btn-solid">continue shopping</a></div>
+            <div class="col-6">
+                @if (Model.CartList != null)
+                {
+                    <a href="/Checkout/" class="btn btn-solid">check out</a>
+                }
+            </div>
         </div>
     </div>
 </section>
@@ -152,7 +173,7 @@
                 data: { id: id, qty: qty},
                 dataType: "text",
                 success: function (msg) {
-                    toastr.info(msg);
+                    toastr.success(msg);
 
                 },
                 error: function (req, status, error) {
@@ -160,9 +181,9 @@
                 }
             });
         }
-        function RemoveCart(id) {
+        function RemoveCart(id, el) {
 
-           
+            var $tr = $(el).parents("tr");
 
             $.ajax({
                 type: "POST",
@@ -170,7 +191,10 @@
                 data: { id: id},
                 dataType: "text",
                 success: function (msg) {
-                    toastr.info(msg);
+                    if (msg == "Item remove sucessfully") {
+                        $tr.remove();
+                    }
+                    toastr.success(msg);
 
                 },
                 error: function (req, status, error) {

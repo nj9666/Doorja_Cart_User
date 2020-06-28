@@ -18591,3 +18591,18 @@ body.dark {
 .cart-section tbody tr td, .wishlist-section tbody tr td{
     min-width:unset;
 }
+.selctedAdd {
+    border-color: var(--theme-deafult);
+}
+    .selctedAdd .card-body .card-title {
+        color: var(--theme-deafult);
+    }
+    .selctedAdd .card-body .card-text {
+        color: var(--theme-deafult);
+    }
+    .selctedAdd .card-footer{
+       display:none;
+    }
+.text-theme {
+    color: var(--theme-deafult);
+}

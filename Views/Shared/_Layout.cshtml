@@ -56,6 +56,7 @@
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/color1.css" media="screen" id="color">
 
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
 
 
 </head>
@@ -207,11 +208,11 @@
                                             <li>
                                                 @if (menu.PCatId == null)
                                                 {
-                                                    <a href="#">@menu.Name</a>
+                                                    <a href="/Category?id=@menu.Id">@menu.Name</a>
                                                     <ul>
                                                         @foreach (CategoryMstr submenu in menus.Where(p => p.PCatId == menu.Id))
                                                         {
-                                                            <li><a href="#">@submenu.Name</a></li>
+                                                            <li><a href="/Category?id=@submenu.Id">@submenu.Name</a></li>
                                                         }
                                                     </ul>
                                                 }
@@ -1541,6 +1542,7 @@
     <!-- Theme js-->
     <script src="~/assets/js/script.js"></script>
 
+    <script src="~/assets/js/toastr.min.js"></script>
     <script>
 
         function openSearch() {
@@ -1550,6 +1552,34 @@
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
+        function docReady(fn) {
+            // see if DOM is already available
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                // call on next available tick
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }  
+        docReady(function () {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        });
     </script>
 
 

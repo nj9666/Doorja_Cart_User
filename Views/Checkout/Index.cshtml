@@ -1,4 +1,4 @@
-﻿
+﻿@model ShopCartUser.Models.ViewModels.CheckOut;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,7 +29,6 @@
     <div class="container">
         <div class="checkout-page">
             <div class="checkout-form">
-                <form>
                     <div class="row">
                         <div class="col-lg-6 col-sm-12 col-xs-12">
                             <div class="checkout-title">
@@ -38,49 +37,53 @@
                             <div class="row check-out">
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">First Name</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
+                                    <h4>@Model.userdt.FirstName</h4>
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">Last Name</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
+                                    <h4>@Model.userdt.LastName</h4>
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">Phone</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
+                                    <h4>
+                                        @{ 
+                                            var ContactNumber = Convert.ToInt64(Model.userdt.ContactNumber);
+                                        }
+                                        @ContactNumber
+                                    </h4>
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">Email Address</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
+                                    <h4>@Model.userdt.Email</h4>
                                 </div>
-                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                                    <div class="field-label">Country</div>
-                                    <select>
-                                        <option>India</option>
-                                        <option>South Africa</option>
-                                        <option>United State</option>
-                                        <option>Australia</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                                    <div class="field-label">Address</div>
-                                    <input type="text" name="field-name" value="" placeholder="Street address">
-                                </div>
-                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                                    <div class="field-label">Town/City</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
-                                </div>
-                                <div class="form-group col-md-12 col-sm-6 col-xs-12">
-                                    <div class="field-label">State / County</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
-                                </div>
-                                <div class="form-group col-md-12 col-sm-6 col-xs-12">
-                                    <div class="field-label">Postal Code</div>
-                                    <input type="text" name="field-name" value="" placeholder="">
-                                </div>
-                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input type="checkbox" name="shipping-option" id="account-option"> &ensp;
-                                    <label for="account-option">Create An Account?</label>
-                                </div>
+
+                            </div>
+                            <div class="checkout-title">
+                                <h3>Shipping Details</h3>
+                            </div>
+                            <input hidden id="selectedaddInput" value="@Model.useraddresses.Where(p => p.IsDefault).First().Id" />
+                            <div class="row addrow">
+                                @foreach (AddressTbl ad in Model.useraddresses)
+                                {
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb-5 ">
+                                        @{ var isit = ad.IsDefault ? "selctedAdd" : "";}
+                                        <div class="card h-100 @isit">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@ad.Line1</h5>
+                                                <p class="card-text">@ad.Line2</p>
+                                                <p class="card-text">@ad.City.Name @ad.State.Name @ad.Country.Name</p>
+                                                <p class="card-text">@ad.Landmark - @ad.Zip</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <small class="text-muted">
+                                                    <button type="button" class="btn-solid btn btn-sm card-link" data-adId="@ad.Id" onclick="selectCard(this)">Select</button>
+
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12 col-xs-12">
@@ -90,80 +93,98 @@
                                         <div>Product <span>Total</span></div>
                                     </div>
                                     <ul class="qty">
-                                        <li>Pink Slim Shirt × 1 <span>$25.10</span></li>
-                                        <li>SLim Fit Jeans × 1 <span>$555.00</span></li>
+                                        @{ decimal Gtlt = 0;}
+                                        @foreach (CartTbl c in Model.FinalProductList)
+                                        {
+
+                                            var total = (c.SubProducat.Price * c.Qty);
+                                            Gtlt = decimal.Add(Gtlt, total);
+
+                                            <li>@c.SubProducat.Product.Name × @c.Qty <span>$@total</span></li>
+
+                                        }
+
                                     </ul>
                                     <ul class="sub-total">
-                                        <li>Subtotal <span class="count">$380.10</span></li>
+                                        <li>Subtotal <span class="count">$@Gtlt</span></li>
                                         <li>
-                                            Shipping
-                                            <div class="shipping">
-                                                <div class="shopping-option">
-                                                    <input type="checkbox" name="free-shipping" id="free-shipping">
-                                                    <label for="free-shipping">Free Shipping</label>
-                                                </div>
-                                                <div class="shopping-option">
-                                                    <input type="checkbox" name="local-pickup" id="local-pickup">
-                                                    <label for="local-pickup">Local Pickup</label>
-                                                </div>
-                                            </div>
+                                            @{
+                                                var shipping = 100;
+                                                var GGtlt = decimal.Add(Gtlt, shipping);
+                                            }
+                                            Shipping<span class="count">$@shipping</span>
+
                                         </li>
                                     </ul>
                                     <ul class="total">
-                                        <li>Total <span class="count">$620.00</span></li>
+
+                                        <input hidden id="GGtlt" value="@GGtlt" />
+                                        <li>Total <span class="count">$@GGtlt</span></li>
                                     </ul>
                                 </div>
                                 <div class="payment-box">
-                                    <div class="upper-box">
-                                        <div class="payment-options">
-                                            <ul>
-                                                <li>
-                                                    <div class="radio-option">
-                                                        <input type="radio" name="payment-group" id="payment-1"
-                                                               checked="checked">
-                                                        <label for="payment-1">
-                                                            Check Payments<span class="small-text">
-                                                                Please send a check to Store
-                                                                Name, Store Street, Store Town, Store State /
-                                                                County, Store Postcode.
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="radio-option">
-                                                        <input type="radio" name="payment-group" id="payment-2">
-                                                        <label for="payment-2">
-                                                            Cash On Delivery<span class="small-text">
-                                                                Please send a check to Store
-                                                                Name, Store Street, Store Town, Store State /
-                                                                County, Store Postcode.
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="radio-option paypal">
-                                                        <input type="radio" name="payment-group" id="payment-3">
-                                                        <label for="payment-3">
-                                                            PayPal<span class="image">
-                                                                <img src="../assets/images/paypal.png"
-                                                                     alt="">
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
+
+                                    <form asp-action="CheckOut" method="post">
+                                        <div class="form-group">
+                                            <label for="email">Coupon Code</label>
+                                            <input asp-for="cpCode" class="form-control" placeholder="Coupon Code" />
+                                            <span asp-validation-for="cpCode" class="text-danger"></span>
                                         </div>
-                                    </div>
-                                    <div class="text-right"><a href="#" class="btn-solid btn">Place Order</a></div>
+                                        <div class="upper-box d-none">
+                                            <div class="payment-options">
+                                                <ul>
+                                                    <li>
+                                                        <div class="radio-option">
+                                                            <input type="radio" name="payment-group" id="payment-2">
+                                                            <label for="payment-2">
+                                                                Cash On Delivery<span class="small-text">
+                                                                    Please send a check to Store
+                                                                    Name, Store Street, Store Town, Store State /
+                                                                    County, Store Postcode.
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="radio-option paypal">
+                                                            <input type="radio" name="payment-group" id="payment-3">
+                                                            <label for="payment-3">
+                                                                PayPal<span class="image">
+                                                                    <img src="../assets/images/paypal.png"
+                                                                         alt="">
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input hidden asp-for="addId" value="@Model.useraddresses.Where(p => p.IsDefault).First().Id" />
+                                        <div class="text-right"><button type="submit" class="btn-solid btn">Place Order</button></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
     </div>
 </section>
 <!-- section end -->
+@section Scripts {
+    <script type="text/javascript">
+        function selectCard(el) {
+
+            $(".addrow").find(".card").each(function () {
+                $(this).removeClass("selctedAdd");
+            });
+
+            $("#addId").val($(el).attr("data-adId"));
+            $(el).parents(".card").addClass("selctedAdd");
+        }
+        
+    </script>
+}
