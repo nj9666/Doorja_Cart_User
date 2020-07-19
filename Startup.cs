@@ -33,7 +33,7 @@ namespace ShopCartUser
             });
 
 
-            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSession();
             services.AddMvc().AddNToastNotifyNoty(new NotyOptions
             {

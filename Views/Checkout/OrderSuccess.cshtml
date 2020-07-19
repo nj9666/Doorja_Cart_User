@@ -61,7 +61,7 @@
                         <ul>
                             <li>subtotal <span>$@subtot</span></li>
                             <li>shipping <span>$100.00</span></li>
-                            <li>tax(GST) <span>$10.00</span></li>
+                            @*<li>tax(GST) <span>$10.00</span></li>*@
                         </ul>
                     </div>
                     <div class="final-total">
@@ -110,7 +110,7 @@
                             <span class="text-theme">
                                 @Model.RESPMSG
                             </span>
-                            @if (Model.PAYMENTMODE != "")
+                            @if (Model.PAYMENTMODE != null)
                             {
                                 <br>
                             <p>Payment Done from @Model.PAYMENTMODE</p>
@@ -120,14 +120,7 @@
 
                         <div class="col-md-12">
                             <div class="delivery-sec d-flex justify-content-between">
-                                @if (Model.STATUS != "TXN_SUCCESS")
-                                {
-                                    <form asp-action="RepayPaytm">
-                                        <input hidden asp-for="ORDERID" />
-                                        <input hidden asp-for="TXNAMOUNT" />
-                                        <button type="submit" class="btn-solid btn">Pay Now</button>
-                                    </form>
-                                }
+                               
                                 <a class="btn-solid btn" href="/">continue shopping</a>
                             </div>
                         </div>

@@ -1,0 +1,216 @@
+﻿@model ShopCartUser.Models.ViewModels.orderDetails;
+@using ShopCartUser.Controllers;
+@{
+    ViewData["Title"] = "OrderDitails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Order details</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Order - @Model.OrderIdV</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!-- section start -->
+<section class="">
+    <div class="container">
+        <div class="checkout-page">
+            <div class="checkout-form">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="row typography_section no-gutters">
+                            <div class="col-lg-8">
+                                <div class="typography-box h-100 border border-secondary">
+                                    <div class="headings h-100 addressWrap p-4 mb-0">
+                                        <h3>Delivery Address</h3>
+                                        <p class="font-weight-bold mt-3 mb-2 nameBox"> @Model.User?.FirstName @Model.User?.LastName </p>
+                                        <p class="addressBox mb-1 w-50">
+
+                                            @Model.orderaddresses?.Line1 @Model.orderaddresses?.Line2 @Model.orderaddresses?.Landmark, @Model.orderaddresses?.City?.Name  - @Model.orderaddresses?.Zip, @Model.orderaddresses?.State?.Name @Model.orderaddresses?.Country?.Name
+
+
+                                        </p>
+                                        <p class="phoneBox mb-0">
+                                            <b>Phone number:</b>
+                                            @{ var cnumb = Convert.ToInt64(Model.User?.ContactNumber); } @cnumb
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="typography-box h-100 border border-secondary border-left-0">
+                                    <div class="headings h-100 p-4 mb-0">
+                                        <h3>More actions</h3>
+                                        <p class="mt-3">Download Invoice</p>
+                                        <p class="mt-4">
+                                            <button type="button" class="btn-solid btn btn-sm">Download</button>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- section end -->
+<!-- section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="checkout-page">
+            <div class="checkout-form">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="row typography_section no-gutters">
+                            <div class="col-lg-12">
+                                @foreach (OrderDetailsTbl order in Model.MyOrders)
+                                {
+                                    <div class="typography-box border border-secondary">
+                                        <div class="headings mb-0">
+                                            <div class="row">
+                                                <div class="col-lg-2">
+                                                    <div class="productImg w-75 m-auto">
+                                                        <img src="@BaseController.uri@order.SubProducat.ProductImg.FirstOrDefault()?.Path" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <h3 class="mb-3 mt-2">@order.SubProducat.Product.Name</h3>
+                                                    <p>
+                                                        Color : <span class="OdColor ml-2" style="background-color: @order.SubProducat.Color?.Name"></span>
+                                                    </p>
+                                                    <p>Size : @order.SubProducat.Size.Name</p>
+                                                    <p> Seller: @order.SubProducat.Product.Vender?.DisplayBusinessName </p>
+                                                    <h3 class="">
+                                                        @{
+                                                            var price = order.SubProducat.Price * order.Qty;
+                                                        }
+                                                        ₹@price <small class="text-theme">(M.R.P: <span class="text-theme">@order.SubProducat.Price</span>, Qty: <span class="text-theme">@order.Qty</span>)</small>
+                                                    </h3>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="order_status_wrap mt-5 my-4">
+                                                        <div class="row">
+
+                                                            @if (order.OrderSubStatus > 1 && order.OrderSubStatus != 6)
+                                                            {
+                                                                <div class="col">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o text-theme"></i>
+                                                                        <p class="text-theme">Order Confirmed</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o"></i>
+                                                                        <p >Order Confirmed</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+
+                                                            @if (order.OrderSubStatus > 2 && order.OrderSubStatus != 6)
+                                                            {
+                                                                <div class="col ">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o text-theme"></i>
+                                                                        <p class="text-theme">Pending RTD</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col ">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o"></i>
+                                                                        <p>Pending RTD</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+
+                                                            @if (order.OrderSubStatus > 3 && order.OrderSubStatus != 6)
+                                                            {
+                                                                <div class="col ">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o text-theme"></i>
+                                                                        <p class="text-theme">Dispatched</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col ">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o"></i>
+                                                                        <p>Dispatched</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+
+                                                            @if (order.OrderSubStatus > 4 && order.OrderSubStatus != 6)
+                                                            {
+                                                                <div class="col ">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o text-theme"></i>
+                                                                        <p class="text-theme">Completed</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col ">
+                                                                    <div class="order_status_point text-center">
+                                                                        <i class="fa fa-2x fa-check-circle-o"></i>
+                                                                        <p>Completed</p>
+                                                                    </div>
+                                                                </div>
+                                                            }
+
+
+                                                            
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        @if (true)
+                                                        {
+                                                        <h3>Waiting for Confirmation ( @order.OrderSubStatus )</h3>
+                                                        }
+                                                        <h3>Delivered on Jun 02, 2018</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- section end -->

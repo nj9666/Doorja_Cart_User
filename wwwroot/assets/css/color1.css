@@ -18604,5 +18604,43 @@ body.dark {
        display:none;
     }
 .text-theme {
+    color: var(--theme-deafult)!important;
+}
+.dashboard .page-title{
+    position:relative;
+}
+.dashboard .page-title > a {
+    position: absolute;
+    right: 0;
+    top: 0px;
     color: var(--theme-deafult);
+}
+.img-30 {
+    width: 30px !important;
+}
+orderImg {
+    transform: scale(1);
+    transition: .4s;
+}
+.orderImg:hover {
+    transform: scale(5);
+    z-index: 1;
+    border: 1px solid var(--theme-deafult);
+    transition: .4s;
+}
+.productImg {
+    max-height: 200px;
+    overflow:hidden;
+}
+.productImg img{
+    max-width:100%;
+    max-height:100%;
+}
+.OdColor {
+    display: inline-block;
+    vertical-align: middle;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 1px solid #444444;
 }

@@ -1,4 +1,6 @@
-﻿
+﻿@model ShopCartUser.Models.ViewModels.ProfileDeshbord;
+@using ShopCartUser.Models.ViewModels;
+@using ShopCartUser.Controllers;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,57 +40,59 @@
                         </span>
                     </div>
                     <div class="block-content">
-                        <ul>
-                            <li class="active"><a href="#">Account Info</a></li>
-                            <li><a href="#">Address Book</a></li>
-                            <li><a href="#">My Orders</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Newsletter</a></li>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Change Password</a></li>
-                            <li class="last"><a href="#">Log Out</a></li>
+                        <ul class="nav flex-column">
+                            <li class="active"><a id="v-pills-Account-tab" class="nav-link p-0" data-toggle="pill" href="#v-pills-Account" role="tab" aria-controls="v-pills-Account" aria-selected="true">Account Info</a></li>
+
+                            <li><a id="v-pills-Address-tab" class="nav-link p-0" data-toggle="pill" href="#v-pills-Address" role="tab" aria-controls="v-pills-Address" aria-selected="false">Address Book</a></li>
+
+                            <li><a id="v-pills-Orders-tab" data-toggle="pill" href="#v-pills-Orders" role="tab" aria-controls="v-pills-Orders" aria-selected="false">My Orders</a></li>
+
+                            <li><a id="v-pills-Wishlist-tab" data-toggle="pill" href="#v-pills-Wishlist" role="tab" aria-controls="v-pills-Wishlist" aria-selected="false">My Wishlist</a></li>
+
+                            <li><a id="v-pills-Password-tab" data-toggle="pill" href="#v-pills-Password" role="tab" aria-controls="v-pills-Password" aria-selected="false">Change Password</a></li>
+
+                            <li class="last"><a href="/Home/logout">Log Out</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-lg-9">
-                <div class="dashboard-right">
-                    <div class="dashboard">
+                <div class="dashboard-right tab-content">
+                    <div class="dashboard tab-pane fade show active" id="v-pills-Account" role="tabpanel" aria-labelledby="v-pills-Account-tab">
                         <div class="page-title">
-                            <h2>My Dashboard</h2>
+                            <h2>Account Information</h2><a href="#">Edit</a>
                         </div>
-                        <div class="welcome-msg">
-                            <p>Hello, MARK JECNO !</p>
-                            <p>
-                                From your My Account Dashboard you have the ability to view a snapshot of your recent
-                                account activity and update your account information. Select a link below to view or
-                                edit information.
-                            </p>
-                        </div>
+
                         <div class="box-account box-info">
-                            <div class="box-head">
-                                <h2>Account Information</h2>
-                            </div>
+
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="box">
                                         <div class="box-title">
-                                            <h3>Contact Information</h3><a href="#">Edit</a>
+                                            <h3>Personal Information</h3>
                                         </div>
-                                        <div class="box-content">
-                                            <h6>MARK JECNO</h6>
-                                            <h6>MARk-JECNO@gmail.com</h6>
-                                            <h6><a href="#">Change Password</a></h6>
+                                        <div class="box-content mb-4">
+                                            <h5><small><b class="text-black-50">Name : </b></small> @Model.loginUser.FirstName @Model.loginUser.LastName  </h5>
+                                            <h5><small><b class="text-black-50">Date of birth : </b></small> @Model.loginUser.Dob.ToShortDateString() </h5>
+                                            @{
+                                                var gnde = "Female";
+                                                if (Model.loginUser.Gender)
+                                                {
+                                                    gnde = "Male";
+                                                }
+                                            }
+                                            <h5><small><b class="text-black-50">Gender : </b></small> @gnde </h5>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="box">
                                         <div class="box-title">
-                                            <h3>Newsletters</h3><a href="#">Edit</a>
+                                            <h3>Contact Information</h3>
                                         </div>
-                                        <div class="box-content">
-                                            <p>You are currently not subscribed to any newsletter.</p>
+                                        <div class="box-content mb-4">
+                                            <h5><small><b class="text-black-50">ContactNumber : </b></small> @{ var cnumb = Convert.ToInt64(Model.loginUser.ContactNumber); } @cnumb</h5>
+                                            <h5><small><b class="text-black-50">Email : </b></small> @Model.loginUser.Email </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -99,24 +103,195 @@
                                         <h3>Address Book</h3><a href="#">Manage Addresses</a>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <h6>Default Billing Address</h6>
-                                            <address>
-                                                You have not set a default billing address.<br><a href="#">
-                                                    Edit
-                                                    Address
-                                                </a>
-                                            </address>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h6>Default Shipping Address</h6>
-                                            <address>
-                                                You have not set a default shipping address.<br><a href="#">Edit Address</a>
-                                            </address>
-                                        </div>
+                                        @if (Model.userDefultaddresses == null)
+                                        {
+                                            <div class="col-sm-6">
+                                                <h6>Default Shipping Address</h6>
+                                                <address>
+                                                    You have not set a default billing address.<br>
+                                                </address>
+                                            </div>
+
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-6">
+                                                <h6>Default Shipping Address</h6>
+
+                                                <address style="text-transform: capitalize;">
+
+                                                    @Model.userDefultaddresses.Line1<br />
+                                                    @if (Model.userDefultaddresses.Line2 != null)
+                                                    {
+                                                        @Model.userDefultaddresses.Line2<br />
+                                                    }
+                                                    @Model.userDefultaddresses.City.Name @Model.userDefultaddresses.State.Name @Model.userDefultaddresses.Country.Name<br />
+                                                    @Model.userDefultaddresses.Landmark -
+                                                    @{ var Zip = Convert.ToInt64(Model.userDefultaddresses.Zip); } @Zip<br />
+
+                                                </address>
+
+                                            </div>
+
+                                        }
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="dashboard tab-pane fade " id="v-pills-Address" role="tabpanel" aria-labelledby="v-pills-Address-tab">
+                        <div class="page-title">
+                            <h2>My Address </h2>
+                        </div>
+                        <input hidden asp-for="addId" value="@Model.useraddresses.Where(p => p.IsDefault).FirstOrDefault()?.Id" />
+                        <div class="row addrow">
+                            @foreach (AddressTbl ad in Model.useraddresses)
+                            {
+                                <div class="col-md-6 col-sm-6 col-xs-12 mb-5 ">
+                                    @{ var isit = ad.IsDefault ? "selctedAdd" : "";}
+                                    <div class="card h-100 @isit">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@ad.Line1</h5>
+                                            <p class="card-text">@ad.Line2</p>
+                                            <p class="card-text">@ad.City.Name @ad.State.Name @ad.Country.Name</p>
+                                            <p class="card-text">@ad.Landmark - @ad.Zip</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <small class="text-muted">
+                                                <button type="button" class="btn-solid btn btn-sm card-link" data-adId="@ad.Id" onclick="selectCard(this)">Select</button>
+
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="dashboard tab-pane fade px-0" id="v-pills-Orders" role="tabpanel" aria-labelledby="v-pills-Orders-tab">
+                        <div class="page-title px-5">
+                            <h2>My Orders</h2>
+                        </div>
+                        <div class="card-body order-datatable">
+                            <table class="display display table table-hover table-striped" id="basic-1">
+                                <thead>
+                                    <tr>
+                                        <th>Order Id</th>
+                                        <th>Product</th>
+                                        <th>Payment Status</th>
+                                        <th>Payment Method</th>
+                                        <th>Order Status</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (CoutOrderTbl order in Model.MyOrders)
+                                    {
+
+                                        <tr>
+                                            <td>@order.Id#@order.OrderIdV</td>
+                                            <td>
+                                                <div class="d-flex flex-wrap">
+                                                    @foreach (string proimg in order.ProductImg)
+                                                    {<img src="@BaseController.uri@proimg" class="img-fluid img-30 mr-2 mb-2 orderImg blur-up lazyloaded">}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if (order.PaymentStatus == 1)
+                                                {
+                                                    <span class="badge badge-success">Done</span>
+                                                }
+                                                else if (order.PaymentStatus == 2)
+                                                {
+                                                    <span class="badge badge-warning">Pending</span>
+                                                }
+                                                else if (order.PaymentStatus == 3)
+                                                {
+                                                    <span class="badge badge-danger">Failed</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-secondary">Not Specified</span>
+                                                }
+
+                                            </td>
+                                            <td>@order.PaymentMethod</td>
+                                            <td>
+                                                @if (order.Status == 0)
+                                                {<span class="badge badge-light">Pending for Payment</span>}
+                                                @if (order.Status == 1)
+                                                {<span class="badge badge-info">Pending First Action</span>}
+                                                @if (order.Status == 2)
+                                                {<span class="badge badge-danger">Pending Labels</span>}
+                                                @if (order.Status == 3)
+                                                {<span class="badge badge-warning">Pending RTD</span>}
+                                                @if (order.Status == 4)
+                                                {<span class="badge badge-brand">Dispatched</span>}
+                                                @if (order.Status == 5)
+                                                {<span class="badge badge-success">Completed</span>}
+                                                @if (order.Status == 6)
+                                                {<span class="badge badge-dark">Cancelled</span>}
+                                                <span class="badge badge-success">@order.Status</span>
+                                            </td>
+                                            <td>@order.CreateDt.Date</td>
+                                            <td>$@order.TotalPrice</td>
+                                            <td><a href="/Dashbord/OrderDitails/?orderid=@order.Id" class="btn btn-sm btn-whitex">View</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                    <div class="dashboard tab-pane fade" id="v-pills-Wishlist" role="tabpanel" aria-labelledby="v-pills-Wishlist-tab">
+                        <div class="page-title">
+                            <h2>My Wishlist</h2>
+                        </div>
+                        <div class="welcome-msg">
+                            <p>Hello, MARK JECNO !</p>
+                            <p>
+                                From your My Account Dashboard you have the ability to view a snapshot of your recent
+                                account activity and update your account information. Select a link below to view or
+                                edit information.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="dashboard tab-pane fade login-page" id="v-pills-Password" role="tabpanel" aria-labelledby="v-pills-Password-tab">
+                        <div class="page-title">
+                            <h2>My Password</h2>
+                        </div>
+                        <div class="theme-card">
+
+
+                            <form method="post" class="theme-form">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label for="email">Old Password</label>
+                                    <input class="form-control" placeholder="Password" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="review">New Password</label>
+                                    <input class="form-control" placeholder="Password" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="review">Confirm New Password</label>
+                                    <input class="form-control" placeholder="Password" />
+                                    <span class="text-danger"></span>
+                                </div>
+
+                                <button type="submit" class="btn btn-solid">Save Password</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -125,3 +300,18 @@
     </div>
 </section>
 <!-- section end -->
+
+@section Scripts {
+    <script type="text/javascript">
+        function selectCard(el) {
+
+            $(".addrow").find(".card").each(function () {
+                $(this).removeClass("selctedAdd");
+            });
+
+            $("#addId").val($(el).attr("data-adId"));
+            $(el).parents(".card").addClass("selctedAdd");
+        }
+
+    </script>
+}

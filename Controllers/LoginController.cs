@@ -58,7 +58,7 @@ namespace ShopCartUser.Controllers
                 }
                 else
                 {
-                    return this.RedirectToAction("Error", "Home");
+                    return this.RedirectToAction("Index", "Login", new { msg = ResData.message });
                 }
 
             }

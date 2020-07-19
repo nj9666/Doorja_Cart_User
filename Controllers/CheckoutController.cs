@@ -50,7 +50,7 @@ namespace ShopCartUser.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login", new { msg = "Plz Login First" }); ;
+                return RedirectToAction("Index", "Login", new { msg = "Plz Login First" }); 
             }
             return View();
         }
@@ -144,6 +144,7 @@ namespace ShopCartUser.Controllers
             outputHTML += "</html>";
             Response.WriteAsync(outputHTML);
         }
+
         public IActionResult OrderSuccess()
         {
             PayResponse pyres = new PayResponse();
@@ -170,6 +171,7 @@ namespace ShopCartUser.Controllers
                 pyres.TXNAMOUNT = parameters["TXNAMOUNT"];
                 pyres.RESPMSG = parameters["RESPMSG"];
                 pyres.STATUS = parameters["STATUS"];
+                pyres.TXNID = parameters["TXNID"];
 
                 HttpCommonResponse ResData = ExecuteGetApi_Auth("Order/Get/" + pyres.ORDERID, null);
                 if (ResData.success == true)
@@ -190,7 +192,6 @@ namespace ShopCartUser.Controllers
                         pyres.RESPMSG = "Payment Sucessfully Done";
                     }
 
-                    pyres.TXNID = parameters["TXNID"];
 
                     if (parameters["PAYMENTMODE"] == "CC")
                     {
@@ -241,7 +242,7 @@ namespace ShopCartUser.Controllers
                     payobj.RespMsg = pyres.RESPMSG;
                     payobj.Status = 2;
                     payobj.TransectionId = pyres.TXNID;
-                    payobj.Type = parameters["PAYMENTMODE"];
+                    payobj.Type = "PENDING && FAILURE ";
 
                     HttpCommonResponse ResDatapay = ExecutePostApi_Auth("Order/payment", payobj);
                     if (ResDatapay.success == true)
@@ -260,7 +261,7 @@ namespace ShopCartUser.Controllers
                     payobj.RespMsg = pyres.RESPMSG;
                     payobj.Status = 3;
                     payobj.TransectionId = pyres.TXNID;
-                    payobj.Type = parameters["PAYMENTMODE"];
+                    payobj.Type = "FAILURE";
 
                     HttpCommonResponse ResDatapay = ExecutePostApi_Auth("Order/payment", payobj);
                     if (ResDatapay.success == true)
