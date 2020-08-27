@@ -1,0 +1,97 @@
+﻿@model ShopCartUser.Models.AddressTbl;
+@{
+    ViewData["Title"] = "newaddress";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Address</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Address</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!-- address section start -->
+<section class="contact-page register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>SHIPPING ADDRESS</h3>
+                <form asp-action="addAaddress" method="post" class="theme-form">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="name">Address Line 1 *</label>
+                            <input asp-for="Line1" class="form-control" placeholder="Line1" />
+                            <span asp-validation-for="Line1" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="name">Address Line 2</label>
+                            <input asp-for="Line2" class="form-control" placeholder="Line2" />
+                            <span asp-validation-for="Line2" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 select_input">
+                            <label for="email">City *</label>
+                            <select asp-for="CityId" class="form-control" size="1">
+                                @foreach (CityMstr city in ViewBag.citys)
+                                {
+                                    <option value="@city.Id">@city.Name</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 select_input">
+                            <label for="email">State *</label>
+                            <select asp-for="StateId" class="form-control" size="1">
+                                @foreach (StateMstr state in ViewBag.states)
+                                {
+                                    <option value="@state.Id">@state.Name</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 select_input">
+                            <label for="review">Country *</label>
+                            <select asp-for="CountryId" class="form-control" size="1">
+                                @foreach (CountryMstr country in ViewBag.countrys)
+                                {
+                                    <option value="@country.Id">@country.Name</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="review">Landmark *</label>
+                            <input asp-for="Landmark" class="form-control" placeholder="Landmark" />
+                            <span asp-validation-for="Landmark" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="review">Zip Code *</label>
+                            <input asp-for="Zip" class="form-control" placeholder="Zip Code" />
+                            <span asp-validation-for="Zip" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-sm btn-solid" type="submit">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->

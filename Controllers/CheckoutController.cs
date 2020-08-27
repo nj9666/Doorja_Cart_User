@@ -37,6 +37,9 @@ namespace ShopCartUser.Controllers
                     {
                         CO.useraddresses = new List<AddressTbl>();
                     }
+                    if(CO.useraddresses.Count <= 0){
+                        return this.RedirectToAction("newaddress", "Dashbord", new { msg = "At Least one address needed for checkout" });
+                    }
 
                     UserMstr logUser = JsonConvert.DeserializeObject<UserMstr>(Request.Cookies["User"]);
                     CO.userdt = logUser;

@@ -18644,3 +18644,10 @@ orderImg {
     border-radius: 50%;
     border: 1px solid #444444;
 }
+.register-page .theme-card .theme-form select {
+    border-color: #dddddd;
+    font-size: 12px;
+    padding: 17px 25px;
+    margin-bottom: 30px;
+    height: inherit;
+}

@@ -1,4 +1,4 @@
-﻿
+﻿@model ShopCartUser.Models.ViewModels.RegViewModel
 @{
     ViewData["Title"] = "Registration";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -33,29 +33,68 @@
             <div class="col-lg-12">
                 <h3>create account</h3>
                 <div class="theme-card">
-                    <form class="theme-form">
+                    <form asp-action="Reg_frm" method="post" class="theme-form">
+                        @*<div asp-validation-summary="All" class="text-danger"></div>*@
                         <div class="form-row">
                             <div class="col-md-6">
-                                <label for="email">First Name</label>
-                                <input type="text" class="form-control" id="fname" placeholder="First Name"
-                                       required="">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="review">Last Name</label>
-                                <input type="password" class="form-control" id="lname" placeholder="Last Name"
-                                       required="">
+                                <label for="UserName">Username</label>
+                                <input asp-for="UserName" class="form-control" placeholder="Username" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-6">
-                                <label for="email">email</label>
-                                <input type="text" class="form-control" id="email" placeholder="Email" required="">
+                                <label for="FirstName">First Name</label>
+                                <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
+                                <label for="LastName">Last Name</label>
+                                <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="Gender">Gender</label>
+                                <select asp-for="Gender" class="form-control">
+                                    <option value="true">Male</option>
+                                    <option value="false">Female</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Dob">Date of birth</label>
+                                <input asp-for="Dob" class="form-control" placeholder="First Name" />
+                                <span asp-validation-for="Dob" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="Email">email</label>
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Email">Contact Number</label>
+                                <input asp-for="ContactNumber" class="form-control" placeholder="Contact Number" />
+                                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
                                 <label for="review">Password</label>
-                                <input type="password" class="form-control" id="review"
-                                       placeholder="Enter your password" required="">
-                            </div><a href="#" class="btn btn-solid">create Account</a>
+                                <input asp-for="Password" class="form-control" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="review">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-solid">create Account</button>
                         </div>
                     </form>
                 </div>

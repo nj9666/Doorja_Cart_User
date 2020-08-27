@@ -25,8 +25,12 @@ namespace ShopCartUser.Controllers
         //    var Product = ExecuteGetApi("Product/Get", 1);
         //    return View();
         //}
-        public IActionResult Index(int prosuctid)
+        public IActionResult Index(int prosuctid,string msg)
         {
+            if (msg != null)
+            {
+                _toastNotification.AddWarningToastMessage(msg);
+            }
             SingleProduct singleProduct = new SingleProduct();
             HttpCommonResponse ResData = ExecuteGetApi("Product/Get", prosuctid);
             if (ResData.success == true)
@@ -65,6 +69,36 @@ namespace ShopCartUser.Controllers
                     {
                         return this.RedirectToAction("Error", "Home");
                     }
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+               
+
+            }
+            catch (Exception ex)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+
+        }
+        [HttpPost]
+        public IActionResult addrating(RatingTbl model)
+        {
+            try
+            {
+                
+                if (Convert.ToInt32(Request.Cookies["UserId"]) > 0)
+                {
+                    HttpCommonResponse ResData = ExecutePostApi_Auth("Rating/Insert", model);
+                    if (ResData.statusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return RedirectToAction("Index", "Login", new { msg = "Plz Re-Login, Your Last Login is one day ago"});
+                    }
+                    return RedirectToAction("Index", "Product", new { prosuctid = model.ProductId, msg = ResData.message });
 
                 }
                 else

@@ -34,6 +34,7 @@ namespace ShopCartUser.Controllers
             }
             else
             {
+                category.CatcolorList = new List<ColoursTbl>();
                 category.CatProductList = new List<ProductMstr>();
             }
             category.catId = id;

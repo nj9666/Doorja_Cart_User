@@ -194,9 +194,25 @@
                                                         </div>
                                                     </div>
                                                     <div class="text-center">
-                                                        @if (true)
+                                                        @if (order.OrderSubStatus == 1)
                                                         {
-                                                        <h3>Waiting for Confirmation ( @order.OrderSubStatus )</h3>
+                                                        <h3>Waiting for Confirmation </h3>
+                                                        }
+                                                        @if (order.OrderSubStatus == 2)
+                                                        {
+                                                        <h3> Pending Labels </h3>
+                                                        }
+                                                        @if(order.OrderSubStatus == 3)
+                                                        {
+                                                        <h3>Ready to Dispatch</h3>
+                                                        }
+                                                        @if (order.OrderSubStatus == 4)
+                                                        {
+                                                        <h3>Dispatched </h3>
+                                                        }
+                                                        @if (order.OrderSubStatus == 5)
+                                                        {
+                                                        <h3>Completed </h3>
                                                         }
                                                         <h3>Delivered on Jun 02, 2018</h3>
                                                     </div>

@@ -39,15 +39,18 @@
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input asp-for="UserName" class="form-control" placeholder="Email" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
+                            <input asp-for="Email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="review">Password</label>
                             <input asp-for="Password" class="form-control" placeholder="Password" />
                             <span asp-validation-for="Password" class="text-danger"></span>
+                            <p class="text-right">
+                                <a href="/Login/Forget_pwd" class="text-theme font-weight-bold">Forget Your Password?</a>
+                            </p>
                         </div>
-                       
+
                         <button type="submit" class="btn btn-solid">Login</button>
                     </form>
                     
@@ -60,7 +63,7 @@
                     <p>
                         Sign up for a free account at our store. Registration is quick and easy. It allows you to be
                         able to order from our shop. To start shopping click register.
-                    </p><a href="#"
+                    </p><a href="/Login/Registration"
                            class="btn btn-solid">Create an Account</a>
                 </div>
             </div>

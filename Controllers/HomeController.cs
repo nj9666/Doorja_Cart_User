@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NToastNotify;
 using ShopCartUser.Models;
 using ShopCartUser.Models.ViewModels;
 
@@ -15,13 +16,19 @@ namespace ShopCartUser.Controllers
     public class HomeController : BaseController
     {
 
+        private readonly IToastNotification _toastNotification;
         private HttpClient ShopCartAPI = new HttpClient();
-        public HomeController()
+        public HomeController(IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             ShopCartAPI.BaseAddress = new Uri("https://localhost:44336/api/ShopAPI/");
         }
-        public IActionResult Index()
+        public IActionResult Index(string msg)
         {
+            if (msg != null)
+            {
+                _toastNotification.AddWarningToastMessage(msg);
+            }
             MediaTypeWithQualityHeaderValue ContentType = new MediaTypeWithQualityHeaderValue("application/json");
             ShopCartAPI.DefaultRequestHeaders.Accept.Add(ContentType);
             HttpResponseMessage apiResponce = ShopCartAPI.GetAsync("User/Home/TopColl").Result;

@@ -60,7 +60,7 @@
                 <div class="dashboard-right tab-content">
                     <div class="dashboard tab-pane fade show active" id="v-pills-Account" role="tabpanel" aria-labelledby="v-pills-Account-tab">
                         <div class="page-title">
-                            <h2>Account Information</h2><a href="#">Edit</a>
+                            <h2>Account Information</h2><a href="/Dashbord/profile">Edit</a>
                         </div>
 
                         <div class="box-account box-info">
@@ -141,13 +141,13 @@
                     </div>
                     <div class="dashboard tab-pane fade " id="v-pills-Address" role="tabpanel" aria-labelledby="v-pills-Address-tab">
                         <div class="page-title">
-                            <h2>My Address </h2>
+                            <h2>My Address </h2><a href="/Dashbord/newaddress">Add New Address</a>
                         </div>
                         <input hidden asp-for="addId" value="@Model.useraddresses.Where(p => p.IsDefault).FirstOrDefault()?.Id" />
                         <div class="row addrow">
                             @foreach (AddressTbl ad in Model.useraddresses)
                             {
-                                <div class="col-md-6 col-sm-6 col-xs-12 mb-5 ">
+                                <div class="col-md-6 col-sm-6 col-xs-12 mb-5 cardwraper">
                                     @{ var isit = ad.IsDefault ? "selctedAdd" : "";}
                                     <div class="card h-100 @isit">
                                         <div class="card-body">
@@ -158,7 +158,8 @@
                                         </div>
                                         <div class="card-footer">
                                             <small class="text-muted">
-                                                <button type="button" class="btn-solid btn btn-sm card-link" data-adId="@ad.Id" onclick="selectCard(this)">Select</button>
+                                                <button type="button" class="btn-solid btn btn-sm card-link" data-adId="@ad.Id" onclick="selectCard(this)">Select as Default</button>
+                                                <button type="button" class="btn-solid btn btn-sm card-link" data-adId="@ad.Id" onclick="removeAddress(this)">Remove</button>
 
                                             </small>
                                         </div>
@@ -262,6 +263,7 @@
                                 account activity and update your account information. Select a link below to view or
                                 edit information.
                             </p>
+                            <h3 class="text-center">Comming Soon..</h3>
                         </div>
                     </div>
                     <div class="dashboard tab-pane fade login-page" id="v-pills-Password" role="tabpanel" aria-labelledby="v-pills-Password-tab">
@@ -271,22 +273,22 @@
                         <div class="theme-card">
 
 
-                            <form method="post" class="theme-form">
+                            <form asp-action="change_pwd" method="post" class="theme-form">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
                                     <label for="email">Old Password</label>
-                                    <input class="form-control" placeholder="Password" />
-                                    <span class="text-danger"></span>
+                                    <input asp-for="oldpass" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="oldpass" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="review">New Password</label>
-                                    <input class="form-control" placeholder="Password" />
-                                    <span class="text-danger"></span>
+                                    <input asp-for="newpass" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="newpass" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="review">Confirm New Password</label>
-                                    <input class="form-control" placeholder="Password" />
-                                    <span class="text-danger"></span>
+                                    <input asp-for="cnewpass" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="cnewpass" class="text-danger"></span>
                                 </div>
 
                                 <button type="submit" class="btn btn-solid">Save Password</button>
@@ -308,9 +310,51 @@
             $(".addrow").find(".card").each(function () {
                 $(this).removeClass("selctedAdd");
             });
-
-            $("#addId").val($(el).attr("data-adId"));
+            var selectedid = $(el).attr("data-adId");
+            $("#addId").val(selectedid);
             $(el).parents(".card").addClass("selctedAdd");
+
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("setdefultAdd")",
+                data: { addId: selectedid},
+                dataType: "text",
+                success: function (msg) {
+                   
+                    toastr.success(msg);
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+
+        }
+        function removeAddress(el) {
+
+            
+            var selectedid = $(el).attr("data-adId");
+
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("removeAddress")",
+                data: { addId: selectedid},
+                dataType: "text",
+                success: function (msg) {
+
+                    if (msg == "Removed Successfully.") {
+                        $(el).parents(".cardwraper").remove();
+                    }
+                    toastr.success(msg);
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+
         }
 
     </script>

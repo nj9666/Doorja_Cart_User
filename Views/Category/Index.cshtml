@@ -57,16 +57,18 @@
                                     <div class="color-selector">
                                         <input hidden asp-for="colorIdFillter" />
                                         <ul>
-                                            @foreach (ColoursTbl c in Model.CatcolorList)
-                                            {
-                                                if (c.Id == Model.colorIdFillter)
+                                            @if (Model.CatcolorList.Any()) { 
+                                                @foreach (ColoursTbl c in Model.CatcolorList)
                                                 {
-                                                    <li class="active" onclick="chageColor(@c.Id,this)" style="background-color:@c.Name"></li>
+                                                    if (c.Id == Model.colorIdFillter)
+                                                    {
+                                                        <li class="active" onclick="chageColor(@c.Id,this)" style="background-color:@c.Name"></li>
 
-                                                }
-                                                else
-                                                {
-                                                    <li class="" onclick="chageColor(@c.Id,this)" style="background-color:@c.Name"></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="" onclick="chageColor(@c.Id,this)" style="background-color:@c.Name"></li>
+                                                    }
                                                 }
                                             }
 

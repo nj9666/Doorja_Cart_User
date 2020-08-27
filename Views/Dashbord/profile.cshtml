@@ -1,0 +1,86 @@
+﻿@model ShopCartUser.Models.UserMstr;
+@{
+    ViewData["Title"] = "profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Edit profile</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!-- personal deatail section start -->
+<section class="contact-page register-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>PERSONAL DETAIL</h3>
+                <form asp-action="saveprofile" method="post" class="theme-form">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="UserName">Username</label>
+                            <input asp-for="UserName" class="form-control" placeholder="Username" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="FirstName">First Name</label>
+                            <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="LastName">Last Name</label>
+                            <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="Gender">Gender</label>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="true">Male</option>
+                                <option value="false">Female</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Dob">Date of birth</label>
+                            <input asp-for="Dob" class="form-control" placeholder="First Name" />
+                            <span asp-validation-for="Dob" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="Email">email</label>
+                            <input asp-for="Email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Email">Contact Number</label>
+                            <input asp-for="ContactNumber" class="form-control" placeholder="Contact Number" />
+                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-solid">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->

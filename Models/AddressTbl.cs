@@ -20,7 +20,6 @@ namespace ShopCartUser.Models
         public string Landmark { get; set; }
         public decimal Zip { get; set; }
         public byte Type { get; set; }
-        public decimal Mobile { get; set; }
         public bool IsDefault { get; set; }
         public DateTime CreateDt { get; set; }
         public DateTime UpdateDt { get; set; }
